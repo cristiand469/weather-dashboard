@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="other.css" >
+    <title>Document</title>
+</head>
+<body>
+<input id="city"></input>
+<button id="getWeatherForcast">Get Weather</button>
+<div class="display">
+    <div class="city">
+    </div>
+    <img class="icon">
+      <h1 class="name"></h1>
+      <p class="desc"></p>
+      <p class="tempF"></p>
+      <p class="windSpeed"></p>
+      <p class="humidity"></p>
+     
+  </div>
+  <div class="forecast" >
+      
+
+  </div>
+     
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#getWeatherForcast').click(function(){
+        var city = $('#city').val();
+        var key = '47ba7438ea89e3551985ad07dcd839cc'
+        $.ajax({
+            url:'http://api.openweathermap.org/data/2.5/weather',
+            dataType:'json',
+            type: 'GET',
+            data:{q:city, appid: key, units:'imperial'},
+
+            success: function(data){
+        $(".city").html("<h1>" + data.name + " Weather Details</h1>");
+        var icon = "http://openweathermap.org/img/w/" + data.weather[0].icon + '.png';
+        $(".icon").attr ('src', icon );
+        $(".desc").text("Description: " + data.weather[0].description);
+        $(".windSpeed").text("Wind Speed: " + data.wind.speed);
+        $(".humidity").text("Humidity: " + data.main.humidity);
+      
+       
+        $(".tempF").text("Temperature (F) " + data.main.temp);
+  
+        var weatherName = data.weather[0].main;
+        $('.weather').text(weatherName);
+            }
+        });
+    });
+});
